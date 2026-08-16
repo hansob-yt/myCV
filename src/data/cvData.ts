@@ -12,7 +12,7 @@ export const personalBio: PersonalBio = {
   location: 'Tehran, Iran',
   email: 'sobhankhademi79@gmail.com',
   github: 'https://github.com/hansob-yt',
-  avatarUrl: 'https://avatars.githubusercontent.com/u/134145612?v=4',
+  avatarUrl: '/avatar.png',
   status: 'Open to Opportunities & Networking',
   statusType: 'available',
   stats: [
