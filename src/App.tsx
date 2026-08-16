@@ -12,13 +12,16 @@ import { ContactSection } from './components/ContactSection';
 import { InteractiveScrollControls } from './components/InteractiveScrollControls';
 import { InteractiveBackground } from './components/InteractiveBackground';
 import { PrintResume } from './components/PrintResume';
-import type { ProjectItem } from './types/cv';
+import { BioModal } from './components/BioModal';
+import { ExperienceModal } from './components/ExperienceModal';
+import type { ProjectItem, ExperienceItem } from './types/cv';
 
 export const App: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>('bio');
+  const [isBioModalOpen, setIsBioModalOpen] = useState<boolean>(false);
+  const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(false);
-  const [selectedSkillTag, setSelectedSkillTag] = useState<string | undefined>(undefined);
 
   // Track active section on scroll
   useEffect(() => {
@@ -48,14 +51,6 @@ export const App: React.FC = () => {
     window.print();
   };
 
-  const handleSelectSkillFromExperience = (skill: string) => {
-    setSelectedSkillTag(skill);
-    const skillsElement = document.getElementById('skills');
-    if (skillsElement) {
-      skillsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   const handleScrollToContact = () => {
     const contactElement = document.getElementById('contact');
     if (contactElement) {
@@ -83,17 +78,18 @@ export const App: React.FC = () => {
           onPrintResume={handlePrintResume}
         />
 
-        {/* Main Content Sections (In the exact specified sequence) */}
+        {/* Main Content Sections (Minimalist, punchy, high-impact flow) */}
         <main className="relative z-10 no-print">
           {/* 1. Bio & Headline */}
           <Hero 
+            onOpenBio={() => setIsBioModalOpen(true)}
             onOpenTerminal={() => setIsTerminalOpen(true)}
             onPrintResume={handlePrintResume}
           />
 
           {/* 2. Experiences Timeline */}
           <ExperienceTimeline 
-            onSelectSkill={handleSelectSkillFromExperience}
+            onOpenExperienceModal={(exp) => setSelectedExperience(exp)}
           />
 
           {/* 3. Highlight Projects */}
@@ -103,9 +99,7 @@ export const App: React.FC = () => {
           />
 
           {/* 4. Technical Skills */}
-          <SkillsSection 
-            selectedSkillTag={selectedSkillTag}
-          />
+          <SkillsSection />
 
           {/* 5. Extras Hub */}
           <InteractiveExtras 
@@ -118,8 +112,25 @@ export const App: React.FC = () => {
           <ContactSection />
         </main>
 
-        {/* Interactive Modals */}
-        {/* A. Enterprise Project Modal (Kilid Auth / Dama Recharts) */}
+        {/* --- Interactive Detail Modals ("Read More" Engine) --- */}
+        
+        {/* 1. Bio & Background Story Modal */}
+        <BioModal 
+          isOpen={isBioModalOpen}
+          onClose={() => setIsBioModalOpen(false)}
+          onOpenTerminal={() => {
+            setIsBioModalOpen(false);
+            setIsTerminalOpen(true);
+          }}
+        />
+
+        {/* 2. Experience Detail & Accomplishments Modal */}
+        <ExperienceModal 
+          experience={selectedExperience}
+          onClose={() => setSelectedExperience(null)}
+        />
+
+        {/* 3. Enterprise Project Modal (Kilid Auth / Dama Recharts) */}
         <ProjectModal 
           project={selectedProject}
           onClose={() => setSelectedProject(null)}
@@ -129,13 +140,13 @@ export const App: React.FC = () => {
           }}
         />
 
-        {/* B. VS-Code Style FSD Architecture Code Explorer */}
+        {/* 4. VS-Code Style FSD Architecture Code Explorer */}
         <TerminalModal 
           isOpen={isTerminalOpen}
           onClose={() => setIsTerminalOpen(false)}
         />
 
-        {/* C. Printable Resume Format (Visible only on print/PDF generation) */}
+        {/* 5. Printable Resume Format (Visible only on print/PDF generation) */}
         <PrintResume />
 
       </div>
