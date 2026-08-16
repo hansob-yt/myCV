@@ -68,7 +68,7 @@ export const App: React.FC = () => {
       <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 selection:bg-sky-500 selection:text-white transition-colors duration-300">
         
         {/* Interactive Smooth Parallax Particles Background */}
-        <InteractiveBackground activeSection={activeSection} />
+        <InteractiveBackground />
 
         {/* Scroll Progress & Quick Jump Floating Dock */}
         <InteractiveScrollControls 
