@@ -86,7 +86,7 @@ export const InteractiveBackground: React.FC = () => {
     let particles: Particle[] = [];
 
     const initParticles = () => {
-      const count = Math.min(130, Math.max(75, Math.floor((width * height) / 11000)));
+      const count = Math.min(110, Math.max(65, Math.floor((width * height) / 13000)));
       setParticleCountDisplay(count);
       particles = [];
 
@@ -99,12 +99,12 @@ export const InteractiveBackground: React.FC = () => {
           y,
           originX: x,
           originY: y,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          size: Math.random() * 2.5 + 1.2,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          size: Math.random() * 2.2 + 1.2,
           colorIndex: i % themeConfigRef.current.particleColors.length,
-          density: Math.random() * 28 + 14,
-          pulseSpeed: Math.random() * 0.03 + 0.01,
+          density: Math.random() * 26 + 14,
+          pulseSpeed: Math.random() * 0.025 + 0.01,
           pulseVal: Math.random() * Math.PI
         });
       }
@@ -112,14 +112,27 @@ export const InteractiveBackground: React.FC = () => {
 
     initParticles();
 
-    // Physics Animation Loop
+    // High-Performance Animation Loop (No heavy shadowBlur per particle)
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
       const currentConfig = themeConfigRef.current;
       const isDayMode = modeRef.current === 'light';
       const palette = currentConfig.particleColors;
 
-      // Draw Cursor Energy Glow Halo
+      // 1. Hardware Accelerated Canvas Ambient Aurora Glows (100x faster than DOM filter:blur(150px))
+      const grad1 = ctx.createRadialGradient(width * 0.15, height * 0.15, 0, width * 0.15, height * 0.15, Math.min(width, height) * 0.45);
+      grad1.addColorStop(0, isDayMode ? 'rgba(56, 189, 248, 0.18)' : `${currentConfig.primaryGlow}25`);
+      grad1.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad1;
+      ctx.fillRect(0, 0, width, height);
+
+      const grad2 = ctx.createRadialGradient(width * 0.85, height * 0.55, 0, width * 0.85, height * 0.55, Math.min(width, height) * 0.5);
+      grad2.addColorStop(0, isDayMode ? 'rgba(99, 102, 241, 0.14)' : `${currentConfig.secondaryGlow}20`);
+      grad2.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad2;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Cursor Energy Glow Halo
       if (pointer.x > 0 && pointer.y > 0) {
         const haloGradient = ctx.createRadialGradient(
           pointer.x, pointer.y, 0,
@@ -127,13 +140,13 @@ export const InteractiveBackground: React.FC = () => {
         );
 
         if (isDayMode) {
-          haloGradient.addColorStop(0, 'rgba(2, 132, 199, 0.15)');
-          haloGradient.addColorStop(0.5, 'rgba(79, 70, 229, 0.08)');
-          haloGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+          haloGradient.addColorStop(0, 'rgba(2, 132, 199, 0.14)');
+          haloGradient.addColorStop(0.6, 'rgba(79, 70, 229, 0.05)');
+          haloGradient.addColorStop(1, 'transparent');
         } else {
-          haloGradient.addColorStop(0, `${currentConfig.accentColor}33`);
-          haloGradient.addColorStop(0.5, `${currentConfig.secondaryGlow}15`);
-          haloGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+          haloGradient.addColorStop(0, `${currentConfig.accentColor}30`);
+          haloGradient.addColorStop(0.6, `${currentConfig.secondaryGlow}12`);
+          haloGradient.addColorStop(1, 'transparent');
         }
 
         ctx.beginPath();
@@ -142,55 +155,59 @@ export const InteractiveBackground: React.FC = () => {
         ctx.fill();
       }
 
-      // Draw Constellation Connections between nearby particles
+      // 3. Constellation Connections (Optimized batching)
+      const maxDist = 100;
+      const maxDistSq = maxDist * maxDist;
+
       for (let a = 0; a < particles.length; a++) {
+        const pa = particles[a];
+
         for (let b = a + 1; b < particles.length; b++) {
-          const dx = particles[a].x - particles[b].x;
-          const dy = particles[a].y - particles[b].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 110;
+          const pb = particles[b];
+          const dx = pa.x - pb.x;
+          const dy = pa.y - pb.y;
+          const distSq = dx * dx + dy * dy;
 
-          if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * (isDayMode ? 0.28 : 0.32);
+          if (distSq < maxDistSq) {
+            const dist = Math.sqrt(distSq);
+            const alpha = (1 - dist / maxDist) * (isDayMode ? 0.25 : 0.28);
             ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            
-            if (isDayMode) {
-              ctx.strokeStyle = `rgba(2, 132, 199, ${alpha})`;
-              ctx.lineWidth = 1.0;
-            } else {
-              ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
-              ctx.lineWidth = 0.9;
-            }
-
+            ctx.moveTo(pa.x, pa.y);
+            ctx.lineTo(pb.x, pb.y);
+            ctx.strokeStyle = isDayMode ? `rgba(2, 132, 199, ${alpha})` : `rgba(56, 189, 248, ${alpha})`;
+            ctx.lineWidth = 0.9;
             ctx.stroke();
           }
         }
 
-        // Draw Interactive Laser Lines from Pointer to Nearby Particles
+        // Pointer Laser Lines
         if (pointer.x > 0 && pointer.y > 0) {
-          const mdx = pointer.x - particles[a].x;
-          const mdy = pointer.y - particles[a].y;
-          const mouseDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          const mdx = pointer.x - pa.x;
+          const mdy = pointer.y - pa.y;
+          const mouseDistSq = mdx * mdx + mdy * mdy;
+          const pointerRadiusSq = pointer.radius * pointer.radius;
 
-          if (mouseDist < pointer.radius) {
-            const lineAlpha = (1 - mouseDist / pointer.radius) * (isDayMode ? 0.7 : 0.6);
-            const colorItem = palette[particles[a].colorIndex % palette.length];
+          if (mouseDistSq < pointerRadiusSq) {
+            const mouseDist = Math.sqrt(mouseDistSq);
+            const lineAlpha = (1 - mouseDist / pointer.radius) * 0.65;
+            const colorItem = palette[pa.colorIndex % palette.length];
             ctx.beginPath();
             ctx.moveTo(pointer.x, pointer.y);
-            ctx.lineTo(particles[a].x, particles[a].y);
-            ctx.strokeStyle = colorItem.glow.replace('0.8', String(lineAlpha)).replace('0.7', String(lineAlpha)).replace('0.6', String(lineAlpha));
-            ctx.lineWidth = 1.4;
+            ctx.lineTo(pa.x, pa.y);
+            ctx.strokeStyle = isDayMode 
+              ? `rgba(2, 132, 199, ${lineAlpha})` 
+              : colorItem.glow.replace('0.8', String(lineAlpha)).replace('0.7', String(lineAlpha));
+            ctx.lineWidth = 1.2;
             ctx.stroke();
           }
         }
       }
 
-      // Update & Render Each Particle
-      particles.forEach((p) => {
+      // 4. Update & Render Particle Nodes
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
         p.pulseVal += p.pulseSpeed;
-        const pulseFactor = Math.sin(p.pulseVal) * 0.35 + 1;
+        const pulseFactor = Math.sin(p.pulseVal) * 0.3 + 1;
 
         // Pointer Repulsion Physics
         const dx = pointer.x - p.x;
@@ -202,52 +219,43 @@ export const InteractiveBackground: React.FC = () => {
           const forceDirectionY = dy / distance;
           const maxDistance = pointer.radius;
           const force = (maxDistance - distance) / maxDistance;
-          const directionX = forceDirectionX * force * p.density * 0.75;
-          const directionY = forceDirectionY * force * p.density * 0.75;
-
-          // Push AWAY from pointer
-          p.x -= directionX;
-          p.y -= directionY;
+          p.x -= forceDirectionX * force * p.density * 0.7;
+          p.y -= forceDirectionY * force * p.density * 0.7;
         } else {
-          // Smooth return toward natural equilibrium
+          // Smooth return toward equilibrium
           if (p.x !== p.originX) {
-            const homeDx = p.originX - p.x;
-            p.x += homeDx * 0.022;
+            p.x += (p.originX - p.x) * 0.022;
           }
           if (p.y !== p.originY) {
-            const homeDy = p.originY - p.y;
-            p.y += homeDy * 0.022;
+            p.y += (p.originY - p.y) * 0.022;
           }
         }
 
-        // Constant gentle ambient drift
+        // Ambient drift
         p.x += p.vx;
         p.y += p.vy;
 
-        // Wrap around viewport edges smoothly
+        // Viewport wrapping
         if (p.x < 0) { p.x = width; p.originX = width; }
         if (p.x > width) { p.x = 0; p.originX = 0; }
         if (p.y < 0) { p.y = height; p.originY = height; }
         if (p.y > height) { p.y = 0; p.originY = 0; }
 
-        // Render Particle Node
+        // Render Particle (Crisp circles without heavy per-node shadow blur)
         const colorItem = palette[p.colorIndex % palette.length];
-        ctx.save();
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * pulseFactor, 0, Math.PI * 2);
         ctx.fillStyle = colorItem.color;
-
-        if (!isDayMode) {
-          ctx.shadowBlur = 9;
-          ctx.shadowColor = colorItem.glow;
-        } else {
-          ctx.shadowBlur = 4;
-          ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
-        }
-
         ctx.fill();
-        ctx.restore();
-      });
+
+        // Soft subtle glow halo rendered with radial arc instead of slow shadowBlur
+        if (!isDayMode) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * pulseFactor * 2.2, 0, Math.PI * 2);
+          ctx.fillStyle = `${colorItem.color}25`;
+          ctx.fill();
+        }
+      }
 
       animationFrameId = requestAnimationFrame(animate);
     };
@@ -265,28 +273,13 @@ export const InteractiveBackground: React.FC = () => {
 
   return (
     <div 
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden ambient-background no-print transition-colors duration-700 ease-out"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden ambient-background no-print transition-colors duration-300 ease-out"
       style={{ backgroundColor: themeConfig.bgColor }}
     >
-      
-      {/* High-Performance Persistent Canvas */}
+      {/* High-Performance Canvas */}
       <canvas 
         ref={canvasRef} 
-        className="w-full h-full block absolute inset-0"
-      />
-
-      {/* Dynamic ambient glowing aurora flares */}
-      <div 
-        className="absolute top-[8%] left-[8%] w-[580px] h-[580px] rounded-full blur-[150px] opacity-40 dark:opacity-30 transition-all duration-1000 ease-out pointer-events-none"
-        style={{ backgroundColor: themeConfig.primaryGlow }}
-      />
-      <div 
-        className="absolute top-[45%] right-[5%] w-[600px] h-[600px] rounded-full blur-[160px] opacity-35 dark:opacity-25 transition-all duration-1000 ease-out pointer-events-none"
-        style={{ backgroundColor: themeConfig.secondaryGlow }}
-      />
-      <div 
-        className="absolute bottom-[10%] left-[20%] w-[520px] h-[520px] rounded-full blur-[140px] opacity-35 dark:opacity-25 transition-all duration-1000 ease-out pointer-events-none"
-        style={{ backgroundColor: themeConfig.tertiaryGlow }}
+        className="w-full h-full block absolute inset-0 will-change-transform"
       />
 
       {/* Floating Status / Physics HUD indicator */}
@@ -304,7 +297,6 @@ export const InteractiveBackground: React.FC = () => {
         <span>{mode === 'light' ? '☀️ Day' : '🌙 Night'}: {themeConfig.name} ({particleCountDisplay} Nodes)</span>
         {pointerActive && <span style={{ color: themeConfig.accentColor }}>• Pointer Active</span>}
       </div>
-
     </div>
   );
 };

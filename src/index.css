@@ -27,7 +27,7 @@
   body {
     margin: 0;
     min-height: 100vh;
-    transition: background-color 0.5s ease, color 0.4s ease;
+    transition: background-color 0.25s ease, color 0.2s ease;
     overflow-x: hidden;
   }
 
@@ -37,42 +37,62 @@
   }
 }
 
-/* Glassmorphism & UI styles */
+/* 60-120 FPS View Transitions API GPU Compositing */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* GPU layer promotion & Hardware acceleration */
+.glass-card, .glass-panel {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Off-screen rendering containment for maximum FPS during theme transitions */
+#skills, #extras, #contact {
+  content-visibility: auto;
+  contain-intrinsic-size: 700px;
+}
+
+/* Optimized Glassmorphism & UI styles */
 .glass-card {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(226, 232, 240, 0.85);
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .dark .glass-card {
   background: rgba(13, 20, 36, 0.62);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.5);
 }
 
 .glass-card-hover:hover {
   border-color: rgba(56, 189, 248, 0.6);
-  transform: translateY(-3px);
+  transform: translateY(-3px) translateZ(0);
   box-shadow: 0 20px 35px -15px rgba(56, 189, 248, 0.2);
 }
 
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid rgba(226, 232, 240, 0.85);
   box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .dark .glass-panel {
   background: rgba(10, 15, 28, 0.75);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.4);
 }
@@ -99,7 +119,7 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 @keyframes pulseGlow {

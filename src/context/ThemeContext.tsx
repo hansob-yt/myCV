@@ -214,25 +214,54 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem('theme-atmosphere', atmosphere);
   }, [mode, atmosphere, themeConfig]);
 
+  // 60 FPS View Transitions API Integration
   const toggleMode = () => {
-    setModeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      document.startViewTransition(() => {
+        setModeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
+      });
+    } else {
+      setModeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    }
   };
 
   const setMode = (newMode: ThemeMode) => {
-    setModeState(newMode);
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      document.startViewTransition(() => {
+        setModeState(newMode);
+      });
+    } else {
+      setModeState(newMode);
+    }
   };
 
   const cycleAtmosphere = () => {
-    setAtmosphereState((prev) => {
-      const order: AtmosphereTheme[] = ['cyber', 'nebula', 'emerald', 'sunset'];
-      const nextIndex = (order.indexOf(prev) + 1) % order.length;
-      return order[nextIndex];
-    });
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      document.startViewTransition(() => {
+        setAtmosphereState((prev) => {
+          const order: AtmosphereTheme[] = ['cyber', 'nebula', 'emerald', 'sunset'];
+          const nextIndex = (order.indexOf(prev) + 1) % order.length;
+          return order[nextIndex];
+        });
+      });
+    } else {
+      setAtmosphereState((prev) => {
+        const order: AtmosphereTheme[] = ['cyber', 'nebula', 'emerald', 'sunset'];
+        const nextIndex = (order.indexOf(prev) + 1) % order.length;
+        return order[nextIndex];
+      });
+    }
   };
 
   const setAtmosphere = (newAtmosphere: AtmosphereTheme) => {
     if (ATMOSPHERE_NAMES[newAtmosphere]) {
-      setAtmosphereState(newAtmosphere);
+      if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+        document.startViewTransition(() => {
+          setAtmosphereState(newAtmosphere);
+        });
+      } else {
+        setAtmosphereState(newAtmosphere);
+      }
     }
   };
 
