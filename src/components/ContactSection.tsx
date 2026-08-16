@@ -61,7 +61,7 @@ export const ContactSection: React.FC = () => {
 
   return (
     <section id="contact" className="pt-20 pb-12 relative">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
@@ -69,29 +69,29 @@ export const ContactSection: React.FC = () => {
             <Mail className="w-3.5 h-3.5" />
             <span>LET'S CONNECT &amp; COLLABORATE</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 dark:text-white">
             Get In Touch
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+          <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-400 mt-2">
             Interested in discussing an engineering opportunity, frontend architecture, or collaborating on a project? Feel free to reach out!
           </p>
         </div>
 
         {/* Main Contact Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-16">
           
           {/* Left Column: Direct Info & Social Cards */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-5 space-y-3">
             
             {/* Email Card with 1-click copy */}
-            <div className="glass-card rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-md">
+            <div className="glass-card rounded-2xl p-4 border border-slate-200/90 dark:border-slate-800/80 shadow-md">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                   Direct Email
                 </span>
                 <button
                   onClick={handleCopyEmail}
-                  className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 hover:bg-sky-500/10 hover:text-sky-500 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1.5 cursor-pointer"
+                  className="px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-slate-100 dark:bg-slate-800 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 transition-all flex items-center gap-1.5 cursor-pointer"
                 >
                   {copiedEmail ? <Check className="w-3 h-3 text-emerald-500" /> : <Copy className="w-3 h-3" />}
                   <span>{copiedEmail ? 'Copied!' : 'Copy'}</span>
@@ -99,12 +99,12 @@ export const ContactSection: React.FC = () => {
               </div>
               <a
                 href={`mailto:${personalBio.email}`}
-                className="text-base sm:text-lg font-mono font-bold text-sky-600 dark:text-sky-400 hover:underline break-all"
+                className="text-sm sm:text-base font-mono font-bold text-sky-600 dark:text-sky-400 hover:underline break-all"
               >
                 {personalBio.email}
               </a>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Fastest response for networking and job opportunities
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 font-medium">
+                Fastest response for networking and opportunities
               </p>
             </div>
 
@@ -113,33 +113,33 @@ export const ContactSection: React.FC = () => {
               href={personalBio.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="glass-card glass-card-hover rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-md block group/gh"
+              className="glass-card glass-card-hover rounded-2xl p-4 border border-slate-200/90 dark:border-slate-800/80 shadow-md block group/gh"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
                   GitHub Profile
                 </span>
-                <GithubIcon className="w-4 h-4 text-slate-500 group-hover/gh:text-sky-500 transition-colors" />
+                <GithubIcon className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover/gh:text-sky-500 transition-colors" />
               </div>
-              <div className="text-base sm:text-lg font-mono font-bold text-slate-900 dark:text-white group-hover/gh:text-sky-500 dark:group-hover/gh:text-sky-400 transition-colors">
+              <div className="text-sm sm:text-base font-mono font-bold text-slate-950 dark:text-white group-hover/gh:text-sky-600 dark:group-hover/gh:text-sky-400 transition-colors">
                 github.com/hansob-yt
               </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Explore open repositories, code experiments, and configurations
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 font-medium">
+                Explore open repositories and code experiments
               </p>
             </a>
 
             {/* Location & Status Card */}
-            <div className="glass-card rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800/80 shadow-md">
+            <div className="glass-card rounded-2xl p-4 border border-slate-200/90 dark:border-slate-800/80 shadow-md">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
-                  <MapPin className="w-5 h-5" />
+                <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                  <MapPin className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-sm font-bold text-slate-900 dark:text-white">
+                  <div className="text-xs font-bold text-slate-950 dark:text-white">
                     {personalBio.location}
                   </div>
-                  <div className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                  <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">
                     Available for Remote &amp; Onsite Opportunities
                   </div>
                 </div>
@@ -150,21 +150,21 @@ export const ContactSection: React.FC = () => {
 
           {/* Right Column: Contact Message Form */}
           <div className="lg:col-span-7">
-            <div className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-200/80 dark:border-slate-800/80 shadow-xl relative overflow-hidden">
+            <div className="glass-card rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/80 shadow-xl relative overflow-hidden">
               
               {/* Toast Notification Alert */}
               {toastMessage && (
-                <div className="mb-6 p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm flex items-center gap-3 animate-fadeIn">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                <div className="mb-4 p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2.5 animate-fadeIn">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>{toastMessage}</span>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Name Input */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    <label className="block text-xs font-semibold text-slate-800 dark:text-slate-300 mb-1">
                       Your Name *
                     </label>
                     <input
@@ -172,16 +172,16 @@ export const ContactSection: React.FC = () => {
                       placeholder="e.g. Sarah Connor"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/60 border ${
+                      className={`w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900/80 border ${
                         errors.name ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'
-                      } text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition-all`}
+                      } text-slate-950 dark:text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-all font-medium`}
                     />
-                    {errors.name && <span className="text-[11px] text-rose-500 mt-1 block">{errors.name}</span>}
+                    {errors.name && <span className="text-[10px] text-rose-500 mt-0.5 block">{errors.name}</span>}
                   </div>
 
                   {/* Email Input */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    <label className="block text-xs font-semibold text-slate-800 dark:text-slate-300 mb-1">
                       Your Email *
                     </label>
                     <input
@@ -189,56 +189,56 @@ export const ContactSection: React.FC = () => {
                       placeholder="e.g. sarah@company.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/60 border ${
+                      className={`w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900/80 border ${
                         errors.email ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'
-                      } text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition-all`}
+                      } text-slate-950 dark:text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-all font-medium`}
                     />
-                    {errors.email && <span className="text-[11px] text-rose-500 mt-1 block">{errors.email}</span>}
+                    {errors.email && <span className="text-[10px] text-rose-500 mt-0.5 block">{errors.email}</span>}
                   </div>
                 </div>
 
                 {/* Subject */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-800 dark:text-slate-300 mb-1">
                     Subject
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Opportunity Discussion / Project Collaboration"
+                    placeholder="e.g. Opportunity Discussion"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition-all"
+                    className="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-950 dark:text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-all font-medium"
                   />
                 </div>
 
                 {/* Message */}
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                  <label className="block text-xs font-semibold text-slate-800 dark:text-slate-300 mb-1">
                     Your Message *
                   </label>
                   <textarea
-                    rows={4}
+                    rows={3}
                     placeholder="Write your message or inquiry here..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className={`w-full px-3.5 py-2.5 rounded-xl text-xs bg-slate-50 dark:bg-slate-950/60 border ${
+                    className={`w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900/80 border ${
                       errors.message ? 'border-rose-500' : 'border-slate-200 dark:border-slate-800'
-                    } text-slate-900 dark:text-white focus:outline-none focus:border-sky-500 transition-all resize-none`}
+                    } text-slate-950 dark:text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-all resize-none font-medium`}
                   />
-                  {errors.message && <span className="text-[11px] text-rose-500 mt-1 block">{errors.message}</span>}
+                  {errors.message && <span className="text-[10px] text-rose-500 mt-0.5 block">{errors.message}</span>}
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3 px-6 rounded-xl font-semibold text-xs sm:text-sm text-white bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:via-indigo-500 hover:to-purple-500 shadow-lg shadow-sky-500/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:via-indigo-500 hover:to-purple-500 shadow-md shadow-sky-500/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <span>Preparing Transmission...</span>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
+                      <Send className="w-3.5 h-3.5" />
                       <span>Send Direct Message</span>
                     </>
                   )}
@@ -251,19 +251,19 @@ export const ContactSection: React.FC = () => {
         </div>
 
         {/* Footer Bar */}
-        <div className="pt-8 border-t border-slate-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
-          <div className="flex items-center gap-2">
+        <div className="pt-6 border-t border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400">
+          <div className="flex items-center gap-2 font-medium">
             <span>© 2026 {personalBio.name}. All rights reserved.</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="font-mono text-[11px]">Built with React 19 • Vite • TypeScript • Tailwind</span>
+          <div className="flex items-center gap-3 font-medium">
+            <span className="font-mono text-[11px]">Built with React 19 • TypeScript • Tailwind</span>
             <button
               onClick={scrollToTop}
-              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-sky-500 hover:text-white text-slate-600 dark:text-slate-400 transition-all cursor-pointer"
-              title="Back to Top"
+              className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer border border-slate-200 dark:border-slate-700"
+              title="Back to top"
             >
-              <ArrowUp className="w-4 h-4" />
+              <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>

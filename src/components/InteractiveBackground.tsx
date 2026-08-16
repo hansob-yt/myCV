@@ -3,9 +3,16 @@ import { useTheme } from '../context/ThemeContext';
 
 export const InteractiveBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { theme } = useTheme();
+  const { mode, themeConfig } = useTheme();
   const [pointerActive, setPointerActive] = useState(false);
   const [particleCountDisplay, setParticleCountDisplay] = useState(0);
+
+  // Keep ref to latest themeConfig and mode
+  const themeConfigRef = useRef(themeConfig);
+  themeConfigRef.current = themeConfig;
+
+  const modeRef = useRef(mode);
+  modeRef.current = mode;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -62,26 +69,6 @@ export const InteractiveBackground: React.FC = () => {
     window.addEventListener('resize', handleResize);
     document.addEventListener('mouseleave', handlePointerLeave);
 
-    // Unified, persistent Antigravity neon palette that remains consistent throughout the page
-    const darkPalette = [
-      { color: '#00f0ff', glow: 'rgba(0, 240, 255, 0.8)' },  // Electric Cyan
-      { color: '#38bdf8', glow: 'rgba(56, 189, 248, 0.8)' },  // Sky Neon
-      { color: '#818cf8', glow: 'rgba(129, 140, 248, 0.8)' }, // Indigo Glow
-      { color: '#a855f7', glow: 'rgba(168, 85, 247, 0.8)' },  // Violet Neon
-      { color: '#34d399', glow: 'rgba(52, 211, 153, 0.8)' },  // Mint Emerald
-      { color: '#f43f5e', glow: 'rgba(244, 63, 94, 0.7)' },   // Rose Cyber
-    ];
-
-    const lightPalette = [
-      { color: '#0284c7', glow: 'rgba(2, 132, 199, 0.6)' },
-      { color: '#4f46e5', glow: 'rgba(79, 70, 229, 0.6)' },
-      { color: '#7c3aed', glow: 'rgba(124, 58, 237, 0.6)' },
-      { color: '#059669', glow: 'rgba(5, 150, 105, 0.6)' },
-      { color: '#e11d48', glow: 'rgba(225, 29, 72, 0.5)' }
-    ];
-
-    const palette = theme === 'dark' ? darkPalette : lightPalette;
-
     interface Particle {
       x: number;
       y: number;
@@ -90,8 +77,7 @@ export const InteractiveBackground: React.FC = () => {
       vx: number;
       vy: number;
       size: number;
-      color: string;
-      glowColor: string;
+      colorIndex: number;
       density: number;
       pulseSpeed: number;
       pulseVal: number;
@@ -107,7 +93,6 @@ export const InteractiveBackground: React.FC = () => {
       for (let i = 0; i < count; i++) {
         const x = Math.random() * width;
         const y = Math.random() * height;
-        const colorObj = palette[Math.floor(Math.random() * palette.length)];
 
         particles.push({
           x,
@@ -117,8 +102,7 @@ export const InteractiveBackground: React.FC = () => {
           vx: (Math.random() - 0.5) * 0.4,
           vy: (Math.random() - 0.5) * 0.4,
           size: Math.random() * 2.5 + 1.2,
-          color: colorObj.color,
-          glowColor: colorObj.glow,
+          colorIndex: i % themeConfigRef.current.particleColors.length,
           density: Math.random() * 28 + 14,
           pulseSpeed: Math.random() * 0.03 + 0.01,
           pulseVal: Math.random() * Math.PI
@@ -131,6 +115,9 @@ export const InteractiveBackground: React.FC = () => {
     // Physics Animation Loop
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
+      const currentConfig = themeConfigRef.current;
+      const isDayMode = modeRef.current === 'light';
+      const palette = currentConfig.particleColors;
 
       // Draw Cursor Energy Glow Halo
       if (pointer.x > 0 && pointer.y > 0) {
@@ -138,9 +125,16 @@ export const InteractiveBackground: React.FC = () => {
           pointer.x, pointer.y, 0,
           pointer.x, pointer.y, pointer.radius
         );
-        haloGradient.addColorStop(0, theme === 'dark' ? 'rgba(0, 240, 255, 0.16)' : 'rgba(2, 132, 199, 0.10)');
-        haloGradient.addColorStop(0.5, theme === 'dark' ? 'rgba(129, 140, 248, 0.07)' : 'rgba(99, 102, 241, 0.05)');
-        haloGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+        if (isDayMode) {
+          haloGradient.addColorStop(0, 'rgba(2, 132, 199, 0.15)');
+          haloGradient.addColorStop(0.5, 'rgba(79, 70, 229, 0.08)');
+          haloGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        } else {
+          haloGradient.addColorStop(0, `${currentConfig.accentColor}33`);
+          haloGradient.addColorStop(0.5, `${currentConfig.secondaryGlow}15`);
+          haloGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        }
 
         ctx.beginPath();
         ctx.arc(pointer.x, pointer.y, pointer.radius, 0, Math.PI * 2);
@@ -157,14 +151,19 @@ export const InteractiveBackground: React.FC = () => {
           const maxDist = 110;
 
           if (dist < maxDist) {
-            const alpha = (1 - dist / maxDist) * (theme === 'dark' ? 0.32 : 0.2);
+            const alpha = (1 - dist / maxDist) * (isDayMode ? 0.28 : 0.32);
             ctx.beginPath();
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.strokeStyle = theme === 'dark' 
-              ? `rgba(56, 189, 248, ${alpha})` 
-              : `rgba(2, 132, 199, ${alpha})`;
-            ctx.lineWidth = 0.9;
+            
+            if (isDayMode) {
+              ctx.strokeStyle = `rgba(2, 132, 199, ${alpha})`;
+              ctx.lineWidth = 1.0;
+            } else {
+              ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+              ctx.lineWidth = 0.9;
+            }
+
             ctx.stroke();
           }
         }
@@ -176,12 +175,13 @@ export const InteractiveBackground: React.FC = () => {
           const mouseDist = Math.sqrt(mdx * mdx + mdy * mdy);
 
           if (mouseDist < pointer.radius) {
-            const lineAlpha = (1 - mouseDist / pointer.radius) * (theme === 'dark' ? 0.6 : 0.4);
+            const lineAlpha = (1 - mouseDist / pointer.radius) * (isDayMode ? 0.7 : 0.6);
+            const colorItem = palette[particles[a].colorIndex % palette.length];
             ctx.beginPath();
             ctx.moveTo(pointer.x, pointer.y);
             ctx.lineTo(particles[a].x, particles[a].y);
-            ctx.strokeStyle = particles[a].glowColor.replace('0.8', String(lineAlpha));
-            ctx.lineWidth = 1.3;
+            ctx.strokeStyle = colorItem.glow.replace('0.8', String(lineAlpha)).replace('0.7', String(lineAlpha)).replace('0.6', String(lineAlpha));
+            ctx.lineWidth = 1.4;
             ctx.stroke();
           }
         }
@@ -189,7 +189,6 @@ export const InteractiveBackground: React.FC = () => {
 
       // Update & Render Each Particle
       particles.forEach((p) => {
-        // Natural Floating Oscillation
         p.pulseVal += p.pulseSpeed;
         const pulseFactor = Math.sin(p.pulseVal) * 0.35 + 1;
 
@@ -231,15 +230,19 @@ export const InteractiveBackground: React.FC = () => {
         if (p.y < 0) { p.y = height; p.originY = height; }
         if (p.y > height) { p.y = 0; p.originY = 0; }
 
-        // Render Glowing Particle Node
+        // Render Particle Node
+        const colorItem = palette[p.colorIndex % palette.length];
         ctx.save();
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size * pulseFactor, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        
-        if (theme === 'dark') {
+        ctx.fillStyle = colorItem.color;
+
+        if (!isDayMode) {
           ctx.shadowBlur = 9;
-          ctx.shadowColor = p.glowColor;
+          ctx.shadowColor = colorItem.glow;
+        } else {
+          ctx.shadowBlur = 4;
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
         }
 
         ctx.fill();
@@ -258,10 +261,13 @@ export const InteractiveBackground: React.FC = () => {
       document.removeEventListener('mouseleave', handlePointerLeave);
       cancelAnimationFrame(animationFrameId);
     };
-  }, [theme]); // Strictly depends only on theme; never resets or reacts to scroll
+  }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden ambient-background no-print">
+    <div 
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden ambient-background no-print transition-colors duration-700 ease-out"
+      style={{ backgroundColor: themeConfig.bgColor }}
+    >
       
       {/* High-Performance Persistent Canvas */}
       <canvas 
@@ -269,25 +275,34 @@ export const InteractiveBackground: React.FC = () => {
         className="w-full h-full block absolute inset-0"
       />
 
-      {/* Consistent, persistent ambient glowing aurora flares */}
+      {/* Dynamic ambient glowing aurora flares */}
       <div 
-        className="absolute top-[8%] left-[8%] w-[580px] h-[580px] rounded-full blur-[150px] opacity-35 dark:opacity-25 pointer-events-none bg-sky-500"
+        className="absolute top-[8%] left-[8%] w-[580px] h-[580px] rounded-full blur-[150px] opacity-40 dark:opacity-30 transition-all duration-1000 ease-out pointer-events-none"
+        style={{ backgroundColor: themeConfig.primaryGlow }}
       />
       <div 
-        className="absolute top-[45%] right-[5%] w-[600px] h-[600px] rounded-full blur-[160px] opacity-30 dark:opacity-20 pointer-events-none bg-indigo-600"
+        className="absolute top-[45%] right-[5%] w-[600px] h-[600px] rounded-full blur-[160px] opacity-35 dark:opacity-25 transition-all duration-1000 ease-out pointer-events-none"
+        style={{ backgroundColor: themeConfig.secondaryGlow }}
       />
       <div 
-        className="absolute bottom-[10%] left-[20%] w-[520px] h-[520px] rounded-full blur-[140px] opacity-30 dark:opacity-20 pointer-events-none bg-purple-600"
+        className="absolute bottom-[10%] left-[20%] w-[520px] h-[520px] rounded-full blur-[140px] opacity-35 dark:opacity-25 transition-all duration-1000 ease-out pointer-events-none"
+        style={{ backgroundColor: themeConfig.tertiaryGlow }}
       />
 
       {/* Floating Status / Physics HUD indicator */}
-      <div className="hidden xl:flex fixed bottom-6 left-6 z-40 items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono glass-panel border border-slate-200/80 dark:border-slate-800/80 shadow-md text-slate-500 dark:text-slate-400 select-none">
+      <div className="hidden xl:flex fixed bottom-6 left-6 z-40 items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono glass-panel border border-slate-200/80 dark:border-slate-800/80 shadow-md text-slate-600 dark:text-slate-400 select-none">
         <span className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+          <span 
+            className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
+            style={{ backgroundColor: themeConfig.accentColor }}
+          />
+          <span 
+            className="relative inline-flex rounded-full h-2 w-2"
+            style={{ backgroundColor: themeConfig.accentColor }}
+          />
         </span>
-        <span>Antigravity Particle Mesh: {particleCountDisplay} Nodes</span>
-        {pointerActive && <span className="text-cyan-500 dark:text-cyan-400">• Pointer Active</span>}
+        <span>{mode === 'light' ? '☀️ Day' : '🌙 Night'}: {themeConfig.name} ({particleCountDisplay} Nodes)</span>
+        {pointerActive && <span style={{ color: themeConfig.accentColor }}>• Pointer Active</span>}
       </div>
 
     </div>

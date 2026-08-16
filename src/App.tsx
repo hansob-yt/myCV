@@ -60,7 +60,7 @@ export const App: React.FC = () => {
 
   return (
     <ThemeProvider>
-      <div className="relative min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 selection:bg-sky-500 selection:text-white transition-colors duration-300">
+      <div className="relative min-h-screen text-slate-900 dark:text-slate-100 selection:bg-sky-500 selection:text-white transition-colors duration-500">
         
         {/* Interactive Smooth Parallax Particles Background */}
         <InteractiveBackground />

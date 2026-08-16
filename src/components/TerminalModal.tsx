@@ -37,11 +37,11 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose })
         className="fixed inset-0 bg-slate-950/85 backdrop-blur-md transition-opacity"
       />
 
-      {/* Terminal IDE Window */}
-      <div className="relative w-full max-w-4xl bg-[#0d1117] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 my-6 flex flex-col max-h-[90vh]">
+      {/* Terminal IDE Window (Locked consistent height and flex layout) */}
+      <div className="relative w-full max-w-4xl bg-[#0d1117] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden z-10 my-6 flex flex-col h-[640px] max-h-[90vh]">
         
-        {/* Terminal Title Bar */}
-        <div className="px-4 py-3 bg-[#161b22] border-b border-slate-800 flex items-center justify-between select-none">
+        {/* Terminal Title Bar (Locked height & shrink-0) */}
+        <div className="px-4 py-3 bg-[#161b22] border-b border-slate-800 flex items-center justify-between select-none shrink-0 h-12">
           
           {/* Mac-style traffic light dots */}
           <div className="flex items-center gap-2">
@@ -72,8 +72,8 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        {/* Tab Strip */}
-        <div className="flex overflow-x-auto bg-[#0d1117] border-b border-slate-800 px-2 pt-2 gap-1 scrollbar-none">
+        {/* Tab Strip (Locked height & shrink-0) */}
+        <div className="flex overflow-x-auto bg-[#0d1117] border-b border-slate-800 px-2 pt-2 gap-1 scrollbar-none shrink-0 h-11 items-end">
           {codeSnippets.map((snippet) => {
             const isActive = activeSnippetId === snippet.id;
             return (
@@ -93,19 +93,21 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose })
           })}
         </div>
 
-        {/* Snippet Context Bar */}
-        <div className="px-5 py-3 bg-[#13171f] border-b border-slate-800 text-xs text-slate-300 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-sky-400 font-bold">{currentSnippet.title}:</span>
-            <span className="text-slate-400 text-xs">{currentSnippet.description}</span>
+        {/* Snippet Context Bar (Locked height & shrink-0, perfectly aligned) */}
+        <div className="px-4 sm:px-5 py-2.5 bg-[#13171f] border-b border-slate-800 text-xs text-slate-300 flex items-center justify-between gap-4 shrink-0 min-h-[44px]">
+          <div className="flex items-center gap-2 min-w-0 overflow-hidden">
+            <span className="font-mono text-sky-400 font-bold shrink-0">{currentSnippet.title}:</span>
+            <span className="text-slate-400 text-xs truncate" title={currentSnippet.description}>
+              {currentSnippet.description}
+            </span>
           </div>
-          <span className="font-mono text-[11px] text-slate-500 shrink-0">
+          <span className="font-mono text-[11px] text-slate-500 shrink-0 hidden sm:inline-block">
             {currentSnippet.language.toUpperCase()} • UTF-8
           </span>
         </div>
 
-        {/* Code Body with Line Numbers */}
-        <div className="p-4 sm:p-6 overflow-y-auto font-mono text-xs sm:text-[13px] leading-relaxed text-slate-200 bg-[#0d1117] flex-1">
+        {/* Code Body with Line Numbers (flex-1 and min-h-0 so it scrolls cleanly without shifting headers) */}
+        <div className="p-4 sm:p-6 overflow-y-auto font-mono text-xs sm:text-[13px] leading-relaxed text-slate-200 bg-[#0d1117] flex-1 min-h-0">
           <div className="table w-full">
             {currentSnippet.code.split('\n').map((line, idx) => (
               <div key={idx} className="table-row hover:bg-slate-900/80 transition-colors">
@@ -134,8 +136,8 @@ export const TerminalModal: React.FC<TerminalModalProps> = ({ isOpen, onClose })
           </div>
         </div>
 
-        {/* Terminal Footer */}
-        <div className="px-5 py-3 bg-[#161b22] border-t border-slate-800 flex flex-wrap items-center justify-between text-xs font-mono text-slate-400 gap-2">
+        {/* Terminal Footer (Locked height & shrink-0) */}
+        <div className="px-5 py-3 bg-[#161b22] border-t border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400 gap-2 shrink-0 h-12">
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>FSD Architecture v2.1 • TypeScript Strict</span>
