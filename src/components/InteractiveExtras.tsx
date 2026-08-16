@@ -1,0 +1,128 @@
+import React from 'react';
+import { interactiveExtras } from '../data/cvData';
+import { useTheme } from '../context/ThemeContext';
+import { 
+  Sparkles, 
+  Terminal, 
+  FileText, 
+  Sun, 
+  Moon, 
+  Mail, 
+  ArrowRight
+} from 'lucide-react';
+import { triggerCelebration, triggerFireworks } from '../utils/confetti';
+
+interface InteractiveExtrasProps {
+  onOpenTerminal: () => void;
+  onPrintResume: () => void;
+  onScrollToContact: () => void;
+}
+
+export const InteractiveExtras: React.FC<InteractiveExtrasProps> = ({
+  onOpenTerminal,
+  onPrintResume,
+  onScrollToContact,
+}) => {
+  const { theme, toggleTheme } = useTheme();
+
+  const handleAction = (type: string) => {
+    if (type === 'terminal') {
+      onOpenTerminal();
+    } else if (type === 'pdf') {
+      triggerCelebration();
+      onPrintResume();
+    } else if (type === 'theme') {
+      toggleTheme();
+      triggerFireworks();
+    } else if (type === 'contact') {
+      onScrollToContact();
+    }
+  };
+
+  const getIcon = (actionType: string) => {
+    switch (actionType) {
+      case 'terminal':
+        return <Terminal className="w-6 h-6 text-sky-500" />;
+      case 'pdf':
+        return <FileText className="w-6 h-6 text-indigo-500" />;
+      case 'theme':
+        return theme === 'dark' ? <Sun className="w-6 h-6 text-amber-400" /> : <Moon className="w-6 h-6 text-indigo-600" />;
+      case 'contact':
+        return <Mail className="w-6 h-6 text-emerald-500" />;
+      default:
+        return <Sparkles className="w-6 h-6 text-sky-500" />;
+    }
+  };
+
+  return (
+    <section id="extras" className="py-20 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-medium bg-gradient-to-r from-sky-500/10 to-indigo-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20 mb-3">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>INTERACTIVE EXTRAS &amp; CAPABILITIES</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Interactive Innovation Hub
+          </h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            Explore advanced tools, real code architecture snippets, downloadable resume layouts, and custom themes built right into this CV web app.
+          </p>
+        </div>
+
+        {/* Extras Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {interactiveExtras.map((extra) => {
+            return (
+              <div
+                key={extra.id}
+                className="glass-card glass-card-hover rounded-3xl p-6 sm:p-8 flex flex-col justify-between group relative overflow-hidden shadow-lg"
+              >
+                {/* Background Hover Accent */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/5 rounded-full blur-2xl group-hover:bg-sky-500/15 transition-all pointer-events-none" />
+
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 shadow-sm group-hover:scale-110 transition-transform">
+                      {getIcon(extra.actionType)}
+                    </div>
+
+                    <span className="text-[11px] font-mono font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                      Interactive Feature
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors mb-1">
+                    {extra.title}
+                  </h3>
+
+                  <p className="text-xs font-semibold font-mono text-sky-600 dark:text-sky-400 mb-3">
+                    {extra.tagline}
+                  </p>
+
+                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    {extra.description}
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-slate-200/80 dark:border-slate-800/80">
+                  <button
+                    onClick={() => handleAction(extra.actionType)}
+                    className="w-full py-2.5 px-4 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-800 hover:bg-gradient-to-r hover:from-sky-500 hover:to-indigo-600 hover:text-white text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700/80 hover:border-transparent transition-all flex items-center justify-center gap-2 group/btn shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-95 cursor-pointer"
+                  >
+                    <span>{extra.actionText}</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
+};

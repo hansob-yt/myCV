@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Sobhan Khademi Sohi | Frontend Web Developer (React &amp; TypeScript)</title>
+    <meta name="description" content="Interactive Glassmorphic CV of Sobhan Khademi Sohi — Frontend Developer with ~2 years experience crafting high-performance, scalable React & TypeScript web apps with Feature-Sliced Design (FSD)." />
+    <meta name="keywords" content="Sobhan Khademi Sohi, Frontend Developer, React 19, TypeScript, Vite, Feature-Sliced Design, Tailwind CSS, TanStack Query, Web Developer Portfolio" />
+    <meta name="author" content="Sobhan Khademi Sohi" />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Sobhan Khademi Sohi | Frontend Web Developer" />
+    <meta property="og:description" content="Interactive CV showcasing enterprise SSO and Data Analytics projects, FSD architecture code explorer, and technical skills." />
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Anti-FOUC Theme Initialization Script -->
+    <script>
+      (function() {
+        try {
+          const savedTheme = localStorage.getItem('theme-mode');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+          } else {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
