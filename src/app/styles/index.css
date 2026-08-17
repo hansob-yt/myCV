@@ -139,11 +139,11 @@
     font-size: 10.5pt;
   }
 
-  .no-print {
+  header, nav, aside, footer, .no-print, [class*="glass-card"]:not(.print-only *), .project-modal-backdrop {
     display: none !important;
   }
 
-  .print-only {
+  .print-only, .print\:block {
     display: block !important;
   }
 

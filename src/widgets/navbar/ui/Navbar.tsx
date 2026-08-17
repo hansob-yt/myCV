@@ -38,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 no-print print:hidden ${
       isScrolled 
         ? 'py-2.5 bg-white/85 dark:bg-[#0d1117]/85 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 shadow-md shadow-slate-900/5 dark:shadow-black/20' 
         : 'py-4 bg-transparent'
