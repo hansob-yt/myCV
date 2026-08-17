@@ -2,124 +2,120 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@layer base {
-  :root {
-    color-scheme: light dark;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-    
-    --scrollbar-thumb: #cbd5e1;
-    --scrollbar-track: transparent;
-    accent-color: #0284c7;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-  }
+@theme {
+  --color-slate-850: #151e2e;
+  --color-slate-925: #0b111e;
+}
 
-  .dark {
-    --scrollbar-thumb: #334155;
-    accent-color: #38bdf8;
+@layer base {
+  * {
+    border-color: rgba(226, 232, 240, 0.8);
+  }
+  
+  .dark * {
+    border-color: rgba(30, 41, 59, 0.8);
   }
 
   html {
     scroll-behavior: smooth;
-    font-family: var(--font-sans);
   }
 
   body {
-    margin: 0;
-    min-height: 100vh;
-    transition: background-color 0.25s ease, color 0.2s ease;
+    background-color: #0d1117;
+    color: #f1f5f9;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  pre, code {
-    color-scheme: dark;
-    font-family: var(--font-mono);
+  body:not(.dark) {
+    background-color: #f8fafc;
+    color: #0f172a;
   }
 }
 
-/* 60-120 FPS View Transitions API GPU Compositing */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* GPU layer promotion & Hardware acceleration */
-.glass-card, .glass-panel {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Off-screen rendering containment for maximum FPS during theme transitions */
-#skills, #extras, #contact {
-  content-visibility: auto;
-  contain-intrinsic-size: 700px;
-}
-
-/* Optimized Glassmorphism & UI styles */
-.glass-card {
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dark .glass-card {
-  background: rgba(13, 20, 36, 0.62);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.5);
-}
-
-.glass-card-hover:hover {
-  border-color: rgba(56, 189, 248, 0.6);
-  transform: translateY(-3px) translateZ(0);
-  box-shadow: 0 20px 35px -15px rgba(56, 189, 248, 0.2);
-}
-
+/* Custom Utilities for High-Performance Glow and Glassmorphism */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .dark .glass-panel {
-  background: rgba(10, 15, 28, 0.75);
+  background: rgba(13, 17, 23, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(30, 41, 59, 0.7);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Fallback for Webkit Scrollbar */
-@supports not (scrollbar-color: auto) {
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb);
-    border-radius: 9999px;
-  }
+.dark .glass-card {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(48, 54, 61, 0.6);
 }
 
-/* Animations */
+.glass-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.dark .glass-card-hover:hover {
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.5);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
+}
+
+/* Terminal Animations */
+@keyframes terminalBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-cursor {
+  animation: terminalBlink 1s infinite;
+}
+
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes pulseGlow {
@@ -134,15 +130,15 @@
 /* Print Optimization CSS */
 @media print {
   @page {
-    margin: 20mm 15mm;
-    size: auto;
+    margin: 18mm 14mm;
+    size: A4 portrait;
   }
 
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 12.5pt;
-    line-height: 1.5;
+    font-size: 11pt;
+    line-height: 1.45;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -157,9 +153,22 @@
 
   .print-only, .print\:block {
     display: block !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .page-break {
-    page-break-before: always;
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+
+  .resume-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .resume-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
