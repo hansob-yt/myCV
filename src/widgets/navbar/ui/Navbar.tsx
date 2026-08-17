@@ -5,15 +5,7 @@ import { handlePdfResumeExport } from '../../../features/pdf-export';
 import { 
   Terminal, 
   FileText, 
-  Menu, 
-  X, 
-  Sparkles, 
-  Layers, 
-  Briefcase, 
-  FolderGit2, 
-  Wrench, 
-  Mail, 
-  User 
+  Layers
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -24,11 +16,9 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ 
   onOpenTerminal, 
-  onPrintResume,
-  activeSection 
+  onPrintResume 
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,22 +28,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Bio', href: '#bio', icon: User, id: 'bio' },
-    { name: 'Experience', href: '#experience', icon: Briefcase, id: 'experience' },
-    { name: 'Projects', href: '#projects', icon: FolderGit2, id: 'projects' },
-    { name: 'Skills', href: '#skills', icon: Wrench, id: 'skills' },
-    { name: 'Extras', href: '#extras', icon: Sparkles, id: 'extras' },
-    { name: 'Contact', href: '#contact', icon: Mail, id: 'contact' },
-  ];
-
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    setMobileMenuOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrint = () => {
@@ -71,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Logo / Monogram */}
         <a 
           href="#bio" 
-          onClick={(e) => handleNavClick(e, '#bio')}
+          onClick={handleLogoClick}
           className="group flex items-center gap-3 cursor-pointer focus:outline-none shrink-0"
         >
           <div className="relative w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-purple-600 p-[1.5px] shadow-md shadow-sky-500/20 group-hover:shadow-sky-500/40 group-hover:scale-105 transition-all duration-300 shrink-0">
@@ -96,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-base text-slate-900 dark:text-white tracking-tight group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors whitespace-nowrap">
+              <span className="font-bold text-base text-slate-950 dark:text-white tracking-tight group-hover:text-sky-500 dark:group-hover:text-sky-400 transition-colors whitespace-nowrap">
                 Sobhan Khademi
               </span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" title="Available for opportunities" />
@@ -108,34 +85,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-900/70 p-1.5 rounded-full border border-slate-200/80 dark:border-slate-800/80 backdrop-blur-md shrink-0">
-          {navLinks.map((link) => {
-            const isActive = activeSection === link.id;
-            return (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 whitespace-nowrap ${
-                  isActive
-                    ? 'bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 shadow-sm font-semibold border border-slate-200 dark:border-slate-700/60'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/50'
-                }`}
-              >
-                <link.icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-sky-500' : 'text-slate-400'}`} />
-                <span>{link.name}</span>
-              </a>
-            );
-          })}
-        </nav>
-
-        {/* Actions (Code Explorer, PDF Resume, Theme Switcher) */}
-        <div className="hidden sm:flex items-center gap-2 shrink-0">
-          {/* Terminal / Code Explorer Button */}
+        {/* Action Controls (FSD Explorer, PDF Resume, Theme Switcher) */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* FSD Code Explorer Button */}
           <button
             onClick={onOpenTerminal}
-            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 border border-slate-200 dark:border-slate-700/60 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+            className="hidden sm:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800/80 hover:bg-sky-500/10 hover:text-sky-600 dark:hover:text-sky-400 border border-slate-200 dark:border-slate-700/60 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
             title="Open FSD Architecture Code Explorer"
           >
             <Terminal className="w-3.5 h-3.5 text-sky-500 shrink-0" />
@@ -145,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* PDF Resume Trigger */}
           <button
             onClick={handlePrint}
-            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-md shadow-sky-500/20 hover:shadow-sky-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
+            className="hidden sm:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-md shadow-sky-500/20 hover:shadow-sky-500/30 transition-all hover:scale-105 active:scale-95 cursor-pointer shrink-0"
             title="Download / Print PDF Resume"
           >
             <FileText className="w-3.5 h-3.5 shrink-0" />
@@ -156,65 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <ThemeSwitcher variant="navbar" />
         </div>
 
-        {/* Mobile Menu Buttons */}
-        <div className="flex sm:hidden items-center gap-1.5 shrink-0">
-          <ThemeSwitcher variant="compact" />
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 cursor-pointer shrink-0"
-            aria-label="Toggle navigation menu"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-
       </div>
-
-      {/* Mobile Dropdown Menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden px-4 pt-3 pb-6 bg-white/95 dark:bg-[#0d1117]/95 backdrop-blur-2xl border-b border-slate-200 dark:border-slate-800 animate-fadeIn">
-          <div className="flex flex-col gap-1.5 mb-4">
-            {navLinks.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className={`px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-3 ${
-                  activeSection === link.id
-                    ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400 font-semibold'
-                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60'
-                }`}
-              >
-                <link.icon className="w-4 h-4 text-sky-500" />
-                <span>{link.name}</span>
-              </a>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenTerminal();
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-mono font-medium text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-            >
-              <Terminal className="w-4 h-4 text-sky-500" />
-              <span>Launch FSD Code Explorer</span>
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                handlePrint();
-              }}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-medium text-white bg-gradient-to-r from-sky-500 to-indigo-600 shadow-md shadow-sky-500/20"
-            >
-              <FileText className="w-4 h-4" />
-              <span>Download / Print PDF Resume</span>
-            </button>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

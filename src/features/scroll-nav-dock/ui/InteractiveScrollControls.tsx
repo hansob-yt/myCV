@@ -69,10 +69,10 @@ export const InteractiveScrollControls: React.FC<InteractiveScrollControlsProps>
         />
       </div>
 
-      {/* 2. Floating Interactive Section Dock (Desktop Right Edge) */}
+      {/* 2. Floating Interactive Section Dock (Desktop & Tablet Right Edge) */}
       <aside 
         aria-label="Section Quick Jump Dock"
-        className="hidden lg:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-3 p-2 rounded-2xl glass-panel border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 no-print"
+        className="hidden md:flex fixed right-5 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-2.5 p-2 rounded-2xl glass-panel border border-slate-200/80 dark:border-slate-800/80 shadow-xl shadow-slate-900/10 no-print"
       >
         {sections.map((sec) => {
           const isActive = activeSection === sec.id;
