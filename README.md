@@ -54,6 +54,7 @@ Detailed documentation is available in the [`docs/`](./docs) folder:
 * 📖 **[Quick Start Guide](./docs/quick-start.md)** — Step-by-step setup, environment prerequisites, and script references.
 * 🛠️ **[Technology Stack Summary](./docs/summary.md)** — In-depth breakdown of React 19, React Compiler, View Transitions, Recharts, and FSD architecture.
 * 💎 **[Code Quality Standards](./docs/code-quality.md)** — Architectural rules, Oxlint static analysis, strict typing, and rendering budgets.
+* 📝 **[Commit Message Rules & Husky](./docs/commit-rules.md)** — Conventional commit conventions, enforced types, and Git hooks.
 * 🧑‍💻 **[Developer Guide](./docs/developer.md)** — Guide for adding new projects, skills, themes, and FSD layer slices.
 
 ---

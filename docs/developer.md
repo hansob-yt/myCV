@@ -139,3 +139,22 @@ When creating a new feature or widget:
 2. Implement components inside `ui/` or business logic inside `model/` or `lib/`.
 3. Create an `index.ts` file inside the slice root to explicitly export only what higher layers should access.
 4. Consume the slice in a higher layer (e.g. `pages/` or `widgets/`).
+
+---
+
+## 6. Git Workflow & Commit Guidelines
+
+This project enforces **Conventional Commits** via **Husky** and **Commitlint**.
+
+When committing code, use the pattern:
+```text
+type(scope): subject
+```
+
+### Examples:
+* `feat(example): this is a commit example`
+* `fix(theme): prevent button layout shifting`
+* `refactor(router): modularize route model`
+* `style(hero): polish glassmorphic borders`
+
+For the full list of allowed types and validation rules, see the [Commit Message Rules Guide](./commit-rules.md).
