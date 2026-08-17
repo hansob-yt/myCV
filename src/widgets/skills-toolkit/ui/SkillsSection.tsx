@@ -3,22 +3,15 @@ import { skills, skillCategories, favoritePackages, type SkillCategory } from '.
 import { 
   Wrench, 
   Search, 
-  Check, 
   Star,
-  Layers
+  Layers,
+  ChevronDown
 } from 'lucide-react';
 
 export const SkillsSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<SkillCategory['id']>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [copiedSkill, setCopiedSkill] = useState<string | null>(null);
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
-
-  const handleCopySkill = (name: string) => {
-    navigator.clipboard.writeText(name);
-    setCopiedSkill(name);
-    setTimeout(() => setCopiedSkill(null), 1600);
-  };
 
   const filteredSkills = skills.filter((skill) => {
     const matchesCategory = activeCategory === 'all' || skill.category === activeCategory;
@@ -96,22 +89,18 @@ export const SkillsSection: React.FC = () => {
         {/* Minimalist Skills Pill Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 mb-6">
           {filteredSkills.map((skill, sIdx) => {
-            const isCopied = copiedSkill === skill.name;
             const isSelected = selectedSkill === skill.name;
 
             return (
               <div
                 key={sIdx}
-                onClick={() => {
-                  handleCopySkill(skill.name);
-                  setSelectedSkill(isSelected ? null : skill.name);
-                }}
-                className={`glass-card rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all hover:border-sky-500/60 hover:-translate-y-0.5 relative overflow-hidden group shadow-sm border ${
+                onClick={() => setSelectedSkill(isSelected ? null : skill.name)}
+                className={`glass-card rounded-xl p-3 flex items-center justify-between cursor-pointer transition-all hover:border-sky-500/60 hover:-translate-y-0.5 relative group shadow-sm border ${
                   isSelected 
                     ? 'border-sky-500 bg-sky-500/5 dark:bg-sky-950/20' 
                     : 'border-slate-200/90 dark:border-slate-800/80'
                 }`}
-                title="Click to copy & view tags"
+                title="Click to toggle specializations"
               >
                 <div className="flex items-center gap-2 truncate">
                   {skill.highlight && (
@@ -122,25 +111,18 @@ export const SkillsSection: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <span className="px-2 py-0.5 rounded-md text-[10px] font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/60">
                     {skill.experience}
                   </span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isSelected ? 'rotate-180 text-sky-500' : 'group-hover:text-slate-600 dark:group-hover:text-slate-300'}`} />
                 </div>
-
-                {/* Copied Feedback Overlay */}
-                {isCopied && (
-                  <div className="absolute inset-0 bg-sky-500 text-white flex items-center justify-center gap-1.5 text-xs font-semibold animate-fadeIn">
-                    <Check className="w-3.5 h-3.5" />
-                    Copied!
-                  </div>
-                )}
               </div>
             );
           })}
         </div>
 
-        {/* Dynamic Skill Details Drawer (Revealed only when clicking a skill) */}
+        {/* Dynamic Skill Details Drawer (Revealed on click) */}
         {currentActiveSkillObj && (
           <div className="mb-6 p-4 rounded-2xl bg-sky-500/5 dark:bg-sky-950/20 border border-sky-500/20 animate-fadeIn flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
@@ -165,7 +147,7 @@ export const SkillsSection: React.FC = () => {
 
             <button
               onClick={() => setSelectedSkill(null)}
-              className="text-xs text-slate-500 hover:text-slate-900 dark:hover:text-white self-start sm:self-center cursor-pointer"
+              className="text-xs font-medium text-slate-500 hover:text-slate-900 dark:hover:text-white self-start sm:self-center cursor-pointer"
             >
               Close
             </button>
