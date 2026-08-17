@@ -133,10 +133,18 @@
 
 /* Print Optimization CSS */
 @media print {
+  @page {
+    margin: 20mm 15mm;
+    size: auto;
+  }
+
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 11pt;
+    font-size: 12.5pt;
+    line-height: 1.5;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .no-print,
