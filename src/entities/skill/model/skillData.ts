@@ -1,9 +1,9 @@
 import type { SkillItem, SkillCategory } from '../../../shared/types';
 
 export const skillCategories: SkillCategory[] = [
-  { id: 'all', name: 'All Skills', description: 'Comprehensive frontend developer toolkit', count: 17 },
+  { id: 'all', name: 'All Skills', description: 'Comprehensive frontend developer toolkit', count: 16 },
   { id: 'core', name: 'Core & Languages', description: 'Web foundations and modern programming standards', count: 4 },
-  { id: 'frameworks', name: 'Frameworks & Libraries', description: 'Component engines, styling & state management', count: 8 },
+  { id: 'frameworks', name: 'Frameworks & Libraries', description: 'Component engines, styling & state management', count: 7 },
   { id: 'tools', name: 'Tooling & Quality', description: 'Bundlers, testing, Git workflows & code quality pipelines', count: 4 },
   { id: 'architecture', name: 'Architecture & Patterns', description: 'Design paradigms and enterprise scalability', count: 3 }
 ];
@@ -22,7 +22,6 @@ export const skills: SkillItem[] = [
   { name: 'TanStack Query v5', level: 90, experience: '1 yr', highlight: true, category: 'frameworks', tags: ['Server State', 'Caching', 'Optimistic UI', 'Prefetching'] },
   { name: 'Zustand v5', level: 90, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Client State', 'Immer', 'Selectors', 'Persistence'] },
   { name: 'React Hook Form & Zod', level: 92, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['Validation', 'Type-Safety', 'Error Handling'] },
-  { name: 'Radix UI Primitives', level: 88, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Accessible Modals', 'Dropdowns', 'Tooltips'] },
   { name: 'Recharts v3', level: 86, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Area Charts', 'Tooltips', 'Responsive Containers'] },
 
   // Tools & Workflow
