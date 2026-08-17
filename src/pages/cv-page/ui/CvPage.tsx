@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import type { ProjectItem } from '../../../entities/project';
-import type { ExperienceItem } from '../../../entities/experience';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { projects, type ProjectItem } from '../../../entities/project';
+import { experiences, type ExperienceItem } from '../../../entities/experience';
 
 // Widgets
 import { Navbar } from '../../../widgets/navbar';
@@ -21,12 +22,36 @@ import { InteractiveScrollControls } from '../../../features/scroll-nav-dock';
 import { InteractiveBackground } from '../../../shared/canvas';
 
 export const CvPage: React.FC = () => {
-  // Modal states
-  const [isBioModalOpen, setIsBioModalOpen] = useState(false);
-  const [selectedExperience, setSelectedExperience] = useState<ExperienceItem | null>(null);
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
-  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { projectId, expId } = useParams<{ projectId?: string; expId?: string }>();
+
   const [activeSection, setActiveSection] = useState('bio');
+
+  // Derive active modals from current React Router URL path & params
+  const isBioModalOpen = location.pathname === '/bio';
+  const isTerminalOpen = location.pathname === '/terminal' || location.pathname === '/fsd-explorer';
+
+  const selectedProject = useMemo<ProjectItem | null>(() => {
+    if (projectId) {
+      return projects.find((p) => p.id === projectId) || null;
+    }
+    return null;
+  }, [projectId]);
+
+  const selectedExperience = useMemo<ExperienceItem | null>(() => {
+    if (expId) {
+      return experiences.find((e) => e.id === expId) || null;
+    }
+    return null;
+  }, [expId]);
+
+  // Modal navigation handlers (syncing URL with React Router)
+  const handleOpenBio = () => navigate('/bio');
+  const handleOpenTerminal = () => navigate('/terminal');
+  const handleOpenProject = (proj: ProjectItem) => navigate(`/projects/${proj.id}`);
+  const handleOpenExperience = (exp: ExperienceItem) => navigate(`/experience/${exp.id}`);
+  const handleCloseModal = () => navigate('/');
 
   // Intersection Observer to track active section for navbar highlight
   useEffect(() => {
@@ -76,7 +101,7 @@ export const CvPage: React.FC = () => {
 
       {/* Top Glassmorphic Navigation Bar */}
       <Navbar 
-        onOpenTerminal={() => setIsTerminalOpen(true)}
+        onOpenTerminal={handleOpenTerminal}
         onPrintResume={handlePrintResume}
         activeSection={activeSection}
       />
@@ -85,20 +110,20 @@ export const CvPage: React.FC = () => {
       <main className="relative z-10 no-print">
         {/* Section 1: Hero & Profile Overview */}
         <Hero 
-          onOpenBio={() => setIsBioModalOpen(true)}
-          onOpenTerminal={() => setIsTerminalOpen(true)}
+          onOpenBio={handleOpenBio}
+          onOpenTerminal={handleOpenTerminal}
           onPrintResume={handlePrintResume}
         />
 
         {/* Section 2: Experience & Traineeship Timeline */}
         <ExperienceTimeline 
-          onOpenExperienceModal={(exp) => setSelectedExperience(exp)}
+          onOpenExperienceModal={handleOpenExperience}
         />
 
         {/* Section 3: Enterprise Projects Grid */}
         <ProjectsGrid 
-          onOpenProjectModal={(proj) => setSelectedProject(proj)}
-          onOpenTerminal={() => setIsTerminalOpen(true)}
+          onOpenProjectModal={handleOpenProject}
+          onOpenTerminal={handleOpenTerminal}
         />
 
         {/* Section 4: Skills & Architecture Toolkit */}
@@ -106,7 +131,7 @@ export const CvPage: React.FC = () => {
 
         {/* Section 5: Interactive Extras & Tools */}
         <InteractiveExtras 
-          onOpenTerminal={() => setIsTerminalOpen(true)}
+          onOpenTerminal={handleOpenTerminal}
           onPrintResume={handlePrintResume}
           onScrollToContact={handleScrollToContact}
         />
@@ -115,29 +140,26 @@ export const CvPage: React.FC = () => {
         <ContactSection />
       </main>
 
-      {/* Detail Modals (Orchestrated by Page View) */}
+      {/* Detail Modals (URL-driven via React Router) */}
       <BioModal 
         isOpen={isBioModalOpen} 
-        onClose={() => setIsBioModalOpen(false)} 
+        onClose={handleCloseModal} 
       />
 
       <ExperienceModal 
         experience={selectedExperience} 
-        onClose={() => setSelectedExperience(null)} 
+        onClose={handleCloseModal} 
       />
 
       <ProjectModal 
         project={selectedProject} 
-        onClose={() => setSelectedProject(null)}
-        onOpenTerminal={() => {
-          setSelectedProject(null);
-          setIsTerminalOpen(true);
-        }}
+        onClose={handleCloseModal}
+        onOpenTerminal={() => navigate('/terminal')}
       />
 
       <TerminalModal 
         isOpen={isTerminalOpen} 
-        onClose={() => setIsTerminalOpen(false)} 
+        onClose={handleCloseModal} 
       />
 
       {/* Print-Only Document */}
