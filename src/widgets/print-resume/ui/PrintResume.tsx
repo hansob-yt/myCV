@@ -109,7 +109,7 @@ export const PrintResume: React.FC = () => {
             <strong>Architecture:</strong> Feature-Sliced Design (FSD), Responsive Web Design, Component Systems
           </div>
           <div>
-            <strong>Tools &amp; DevOps:</strong> Git, Docker, Nginx, Vitest, ESLint 9, Husky, Lint-Staged, Chrome DevTools
+            <strong>Tools &amp; Workflow:</strong> Git, GitHub Workflows, Vitest, ESLint, Husky, Lint-Staged, Chrome DevTools
           </div>
         </div>
       </section>

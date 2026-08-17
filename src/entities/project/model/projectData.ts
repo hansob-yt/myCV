@@ -10,7 +10,7 @@ export const projects: ProjectItem[] = [
     description: [
       'Kilid serves as the core authentication foundation for an enterprise ecosystem. It centralizes user identity, multi-factor authorization, OAuth2/OIDC token rotation, and single-session synchronization across distributed services.',
       'Engineered with React 19, TypeScript, and Vite 8 under a strict Feature-Sliced Design (FSD) directory structure, separating app, processes, pages, widgets, features, entities, and shared utilities for total decoupled maintainability.',
-      'Utilizes React Hook Form paired with Zod schemas for instant schema validation without UI stutter, and deployed via multi-stage Docker containers with optimized Nginx caching.'
+      'Utilizes React Hook Form paired with Zod schemas for instant schema validation without UI stutter, with optimized Rollup code-splitting and asset caching.'
     ],
     techStack: [
       'React 19',
@@ -23,16 +23,14 @@ export const projects: ProjectItem[] = [
       'Radix UI Primitives',
       'React Hook Form',
       'Zod',
-      'Vitest',
-      'Docker',
-      'Nginx'
+      'Vitest'
     ],
     demoType: 'kilid-auth',
     highlights: [
       'High-security auth flows with OAuth2 token rotation and automatic refresh synchronization.',
       'Strict Feature-Sliced Design (FSD) architecture ensuring 100% modular separation.',
       'Zero form lag validation with React Hook Form + Zod compile-time type safety.',
-      'Multi-stage Docker containerization with Nginx reverse proxy optimizations.'
+      'Vite build optimizations with manual chunking and sub-50ms route time-to-interactive.'
     ],
     architectureDetails: {
       pattern: 'Feature-Sliced Design (FSD) v2.1',

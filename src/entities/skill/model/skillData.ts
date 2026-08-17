@@ -1,10 +1,10 @@
 import type { SkillItem, SkillCategory } from '../../../shared/types';
 
 export const skillCategories: SkillCategory[] = [
-  { id: 'all', name: 'All Skills', description: 'Comprehensive frontend developer toolkit', count: 18 },
+  { id: 'all', name: 'All Skills', description: 'Comprehensive frontend developer toolkit', count: 17 },
   { id: 'core', name: 'Core & Languages', description: 'Web foundations and modern programming standards', count: 4 },
-  { id: 'frameworks', name: 'Frameworks & Libraries', description: 'Component engines, styling & state management', count: 6 },
-  { id: 'tools', name: 'DevOps & Tooling', description: 'Bundlers, testing, containers & code quality pipelines', count: 5 },
+  { id: 'frameworks', name: 'Frameworks & Libraries', description: 'Component engines, styling & state management', count: 8 },
+  { id: 'tools', name: 'Tooling & Quality', description: 'Bundlers, testing, Git workflows & code quality pipelines', count: 4 },
   { id: 'architecture', name: 'Architecture & Patterns', description: 'Design paradigms and enterprise scalability', count: 3 }
 ];
 
@@ -27,9 +27,8 @@ export const skills: SkillItem[] = [
 
   // Tools & Workflow
   { name: 'Git & GitHub Workflows', level: 90, experience: '2 yrs', highlight: true, category: 'tools', tags: ['Git Flow', 'Branching', 'PR Reviews', 'Rebase'] },
-  { name: 'Docker & Multi-Stage Builds', level: 82, experience: '1 yr', highlight: false, category: 'tools', tags: ['Containers', 'Nginx Config', 'Production Images'] },
-  { name: 'Vitest & React Testing Library', level: 84, experience: '1.5 yrs', highlight: false, category: 'tools', tags: ['Unit Tests', 'Integration Tests', 'Mocking'] },
-  { name: 'Code Quality (ESLint 9, Husky)', level: 92, experience: '2 yrs', highlight: true, category: 'tools', tags: ['Lint-Staged', 'Commitlint', 'Prettier'] },
+  { name: 'Vitest & Testing Library', level: 84, experience: '1.5 yrs', highlight: false, category: 'tools', tags: ['Unit Tests', 'Integration Tests', 'Mocking'] },
+  { name: 'Code Quality (ESLint, Husky)', level: 92, experience: '2 yrs', highlight: true, category: 'tools', tags: ['Lint-Staged', 'Commitlint', 'Oxlint', 'Prettier'] },
   { name: 'Chrome DevTools & Profiling', level: 88, experience: '2 yrs', highlight: false, category: 'tools', tags: ['Performance Audits', 'Memory Leaks', 'Network Profiling'] },
 
   // Architecture & Methodologies
