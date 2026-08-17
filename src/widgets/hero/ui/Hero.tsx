@@ -220,10 +220,7 @@ export const Hero: React.FC<HeroProps> = ({
 
                 {/* Print Resume */}
                 <button
-                  onClick={() => {
-                    triggerCelebration();
-                    onPrintResume();
-                  }}
+                  onClick={onPrintResume}
                   className="p-2.5 rounded-xl text-slate-700 dark:text-slate-400 hover:text-slate-950 dark:hover:text-white bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all ml-auto cursor-pointer"
                   title="Download / Print PDF Resume"
                 >

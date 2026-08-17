@@ -1,7 +1,7 @@
 import React from 'react';
 import { interactiveExtras } from '../../../entities/code-snippet';
 import { useTheme } from '../../../app/providers/theme-provider';
-import { triggerCelebration, triggerFireworks } from '../../../shared/lib';
+import { triggerFireworks } from '../../../shared/lib';
 import { 
   Sparkles, 
   Terminal, 
@@ -30,7 +30,6 @@ export const InteractiveExtras: React.FC<InteractiveExtrasProps> = ({
     if (type === 'terminal') {
       onOpenTerminal();
     } else if (type === 'pdf') {
-      triggerCelebration();
       onPrintResume();
     } else if (type === 'theme') {
       cycleAtmosphere();

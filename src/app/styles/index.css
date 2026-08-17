@@ -136,10 +136,14 @@
   body {
     background: #ffffff !important;
     color: #0f172a !important;
-    font-size: 10.5pt;
+    font-size: 11pt;
   }
 
-  header, nav, aside, footer, .no-print, [class*="glass-card"]:not(.print-only *), .project-modal-backdrop {
+  .no-print,
+  canvas,
+  .ambient-background,
+  .project-modal-backdrop,
+  aside[aria-label*="Dock"] {
     display: none !important;
   }
 
