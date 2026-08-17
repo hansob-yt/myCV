@@ -28,7 +28,7 @@ export const NotFoundPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-2.5">
           <Link
             to="/"
-            className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-md shadow-sky-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold text-white bg-linear-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 shadow-md shadow-sky-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Home className="w-3.5 h-3.5" />
             <span>Return to CV Home</span>
