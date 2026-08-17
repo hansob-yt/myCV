@@ -19,15 +19,15 @@ export const skills: SkillItem[] = [
   { name: 'React 19 / 18', level: 94, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['Hooks', 'Context API', 'Suspense', 'Custom Hooks'] },
   { name: 'Vite 8', level: 92, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['HMR', 'Rollup Plugins', 'Chunk Splitting', 'ESBuild'] },
   { name: 'Tailwind CSS v4', level: 95, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['Responsive Design', 'Custom Utilities', 'Dark Mode'] },
-  { name: 'TanStack Query v5', level: 90, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['Server State', 'Caching', 'Optimistic UI', 'Prefetching'] },
-  { name: 'Zustand v5', level: 90, experience: '2 yrs', highlight: false, category: 'frameworks', tags: ['Client State', 'Immer', 'Selectors', 'Persistence'] },
+  { name: 'TanStack Query v5', level: 90, experience: '1 yr', highlight: true, category: 'frameworks', tags: ['Server State', 'Caching', 'Optimistic UI', 'Prefetching'] },
+  { name: 'Zustand v5', level: 90, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Client State', 'Immer', 'Selectors', 'Persistence'] },
   { name: 'React Hook Form & Zod', level: 92, experience: '2 yrs', highlight: true, category: 'frameworks', tags: ['Validation', 'Type-Safety', 'Error Handling'] },
-  { name: 'Radix UI Primitives', level: 88, experience: '1.5 yrs', highlight: false, category: 'frameworks', tags: ['Accessible Modals', 'Dropdowns', 'Tooltips'] },
-  { name: 'Recharts v3', level: 86, experience: '1.5 yrs', highlight: false, category: 'frameworks', tags: ['Area Charts', 'Tooltips', 'Responsive Containers'] },
+  { name: 'Radix UI Primitives', level: 88, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Accessible Modals', 'Dropdowns', 'Tooltips'] },
+  { name: 'Recharts v3', level: 86, experience: '1 yr', highlight: false, category: 'frameworks', tags: ['Area Charts', 'Tooltips', 'Responsive Containers'] },
 
   // Tools & Workflow
   { name: 'Git & GitHub Workflows', level: 90, experience: '2 yrs', highlight: true, category: 'tools', tags: ['Git Flow', 'Branching', 'PR Reviews', 'Rebase'] },
-  { name: 'Vitest & Testing Library', level: 84, experience: '1.5 yrs', highlight: false, category: 'tools', tags: ['Unit Tests', 'Integration Tests', 'Mocking'] },
+  { name: 'Vitest & Testing Library', level: 84, experience: '1 yr', highlight: false, category: 'tools', tags: ['Unit Tests', 'Integration Tests', 'Mocking'] },
   { name: 'Code Quality (ESLint, Husky)', level: 92, experience: '2 yrs', highlight: true, category: 'tools', tags: ['Lint-Staged', 'Commitlint', 'Oxlint', 'Prettier'] },
   { name: 'Chrome DevTools & Profiling', level: 88, experience: '2 yrs', highlight: false, category: 'tools', tags: ['Performance Audits', 'Memory Leaks', 'Network Profiling'] },
 
