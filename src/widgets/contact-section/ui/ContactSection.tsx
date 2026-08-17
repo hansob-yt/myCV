@@ -9,8 +9,13 @@ import {
   Check, 
   MapPin, 
   ArrowUp, 
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Globe
 } from 'lucide-react';
+
+const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || '365991ee-5f52-4c5d-a160-af7372056874';
 
 export const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +27,7 @@ export const ContactSection: React.FC = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
   const handleCopyEmail = () => {
@@ -41,18 +46,56 @@ export const ContactSection: React.FC = () => {
     return Object.keys(errs).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
-    setTimeout(() => {
+    setStatus(null);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject ? `[Portfolio] ${formData.subject}` : `[Portfolio] Message from ${formData.name}`,
+          message: formData.message,
+          from_name: `${formData.name} (via Portfolio)`,
+          botcheck: false,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        triggerFireworks();
+        setStatus({
+          type: 'success',
+          text: `Thank you, ${formData.name}! Your message was successfully sent to my inbox. I'll get back to you soon.`,
+        });
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setStatus({
+          type: 'error',
+          text: result.message || 'Could not deliver the message. Please feel free to email me directly.',
+        });
+      }
+    } catch (err) {
+      console.error('Contact submission error:', err);
+      setStatus({
+        type: 'error',
+        text: 'Network transmission error. Please reach out directly to sobhankhademi79@gmail.com.',
+      });
+    } finally {
       setIsSubmitting(false);
-      triggerFireworks();
-      setToastMessage(`Thank you, ${formData.name}! Your message has been prepared.`);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setToastMessage(null), 5000);
-    }, 1000);
+      setTimeout(() => setStatus(null), 7000);
+    }
   };
 
   const scrollToTop = () => {
@@ -73,7 +116,7 @@ export const ContactSection: React.FC = () => {
             Get In Touch
           </h2>
           <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-400 mt-2">
-            Interested in discussing an engineering opportunity, frontend architecture, or collaborating on a project? Feel free to reach out!
+            Interested in discussing an engineering opportunity, frontend architecture, or collaborating on a project? Send a direct message below!
           </p>
         </div>
 
@@ -108,6 +151,27 @@ export const ContactSection: React.FC = () => {
               </p>
             </div>
 
+            {/* Live Portfolio Domain Card */}
+            <a
+              href="https://hansob.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-card glass-card-hover rounded-2xl p-4 border border-slate-200/90 dark:border-slate-800/80 shadow-md block group/web"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-mono font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400">
+                  Live Portfolio
+                </span>
+                <Globe className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover/web:text-sky-500 transition-colors" />
+              </div>
+              <div className="text-sm sm:text-base font-mono font-bold text-slate-950 dark:text-white group-hover/web:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                hansob.vercel.app
+              </div>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 font-medium">
+                Deployed production release with live form delivery
+              </p>
+            </a>
+
             {/* GitHub Card */}
             <a
               href={personalBio.github}
@@ -121,7 +185,7 @@ export const ContactSection: React.FC = () => {
                 </span>
                 <GithubIcon className="w-4 h-4 text-slate-600 dark:text-slate-400 group-hover/gh:text-sky-500 transition-colors" />
               </div>
-              <div className="text-sm sm:text-base font-mono font-bold text-slate-950 dark:text-white group-hover/gh:text-sky-600 dark:group-hover/gh:text-sky-400 transition-colors">
+              <div className="text-sm sm:text-base font-mono font-bold text-slate-950 dark:text-white group-hover/gh:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
                 github.com/hansob-yt
               </div>
               <p className="text-[11px] text-slate-600 dark:text-slate-400 mt-1 font-medium">
@@ -152,11 +216,19 @@ export const ContactSection: React.FC = () => {
           <div className="lg:col-span-7">
             <div className="glass-card rounded-3xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-800/80 shadow-xl relative overflow-hidden">
               
-              {/* Toast Notification Alert */}
-              {toastMessage && (
-                <div className="mb-4 p-3.5 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2.5 animate-fadeIn">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>{toastMessage}</span>
+              {/* Status Alert (Success / Error) */}
+              {status && (
+                <div className={`mb-4 p-3.5 rounded-2xl border text-xs flex items-center gap-2.5 animate-fadeIn ${
+                  status.type === 'success'
+                    ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-900 dark:text-emerald-300'
+                    : 'bg-rose-500/15 border-rose-500/30 text-rose-900 dark:text-rose-300'
+                }`}>
+                  {status.type === 'success' ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                  )}
+                  <span>{status.text}</span>
                 </div>
               )}
 
@@ -204,7 +276,7 @@ export const ContactSection: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Opportunity Discussion"
+                    placeholder="e.g. Opportunity Discussion / Project Inquiry"
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     className="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-slate-950 dark:text-white placeholder-slate-500 focus:outline-none focus:border-sky-500 transition-all font-medium"
@@ -235,7 +307,10 @@ export const ContactSection: React.FC = () => {
                   className="w-full py-2.5 px-4 rounded-xl font-semibold text-xs text-white bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 hover:from-sky-400 hover:via-indigo-500 hover:to-purple-500 shadow-md shadow-sky-500/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-95 disabled:opacity-50 cursor-pointer"
                 >
                   {isSubmitting ? (
-                    <span>Preparing Transmission...</span>
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Sending Message to Inbox...</span>
+                    </>
                   ) : (
                     <>
                       <Send className="w-3.5 h-3.5" />
