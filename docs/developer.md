@@ -13,38 +13,38 @@ src/
 │   │   ├── router-provider/          # React Router v7 createBrowserRouter
 │   │   └── theme-provider/           # View Transitions Day/Night & Atmosphere
 │   ├── styles/
-│   │   └── index.css                 # Tailwind CSS v4 & custom variants
+│   │   └── index.css                 # Tailwind CSS v4, custom variants, print styles
 │   ├── App.tsx                       # Root component
 │   └── index.ts
 │
 ├── pages/                            # Layer 2: Composed routed views
-│   ├── cv-page/                      # Main interactive CV page view
+│   ├── cv-page/                      # Main interactive CV page view with URL modals
 │   └── not-found-page/               # 404 Route Not Found page view
 │
 ├── widgets/                          # Layer 3: Autonomous self-contained UI blocks
-│   ├── navbar/                       # Top navigation bar
-│   ├── hero/                         # Bio hero card and stats
-│   ├── experience-timeline/          # Career trajectory & metrics
-│   ├── projects-grid/                # Enterprise portfolio & filters
-│   ├── skills-toolkit/               # Tech skills inventory & search
-│   ├── interactive-extras/           # Capabilities & tools hub
-│   ├── contact-section/              # Contact form & social links
+│   ├── navbar/                       # Minimalist top header (brand & action tools)
+│   ├── hero/                         # Bio hero card, stats, and Story trigger
+│   ├── experience-timeline/          # Career trajectory cards & Read More triggers
+│   ├── projects-grid/                # Enterprise portfolio cards & Case Study triggers
+│   ├── skills-toolkit/               # Tech skills pill matrix, category filters & search
+│   ├── interactive-extras/           # Capabilities & tools hub (2x2 grid)
+│   ├── contact-section/              # Web3Forms direct message form & social links
 │   ├── fsd-code-explorer/            # Interactive FSD terminal modal
 │   ├── bio-modal/                    # Detailed background narrative modal
 │   ├── experience-modal/             # Detailed accomplishments modal
 │   ├── project-modal/                # Deep-dive enterprise showcase & live demos modal
-│   └── print-resume/                 # Clean ATS print view layout
+│   └── print-resume/                 # Clean 2-page ATS print view layout
 │
 ├── features/                         # Layer 4: User actions & interactions
 │   ├── theme-switcher/               # Day/Night & Atmosphere switcher UI
 │   ├── scroll-nav-dock/              # Right-edge quick jump dock & progress bar
-│   └── pdf-export/                   # PDF trigger with celebration effects
+│   └── pdf-export/                   # PDF print export handler
 │
 ├── entities/                         # Layer 5: Domain entities & data models
-│   ├── profile/                      # Personal identity, stats, links
+│   ├── profile/                      # Personal identity, full bio, stats, links
 │   ├── experience/                   # Work history and achievements
 │   ├── project/                      # Enterprise project case studies
-│   ├── skill/                        # Skills inventory and categories
+│   ├── skill/                        # Skills inventory, levels, categories
 │   └── code-snippet/                 # Architectural code snippets
 │
 ├── shared/                           # Layer 6: Reusable primitives & utilities
@@ -109,7 +109,7 @@ src/
    {
      name: 'GraphQL',
      level: 88,
-     experience: '1.5 yrs',
+     experience: '1 yr',
      highlight: false,
      category: 'frameworks', // 'core' | 'frameworks' | 'tools' | 'architecture'
      tags: ['Apollo Client', 'Queries', 'Mutations', 'Schema Stitching']
@@ -132,19 +132,20 @@ To adjust or add a new atmosphere:
 
 ---
 
-## 5. Adding a New FSD Layer Slice
+## 5. Configuring Web3Forms Direct Messaging
 
-When creating a new feature or widget:
-1. Create a directory under the appropriate layer (e.g. `src/features/new-action/`).
-2. Implement components inside `ui/` or business logic inside `model/` or `lib/`.
-3. Create an `index.ts` file inside the slice root to explicitly export only what higher layers should access.
-4. Consume the slice in a higher layer (e.g. `pages/` or `widgets/`).
+Direct messaging is managed in:
+[`src/widgets/contact-section/ui/ContactSection.tsx`](file:///d:/gitProjects/myCV/src/widgets/contact-section/ui/ContactSection.tsx)
+
+* Uses the environment variable `VITE_WEB3FORMS_KEY` from `.env`.
+* Configures automatic payload dispatching to `https://api.web3forms.com/submit`.
+* Includes spam honeypot filtering (`botcheck: false`) and instant fireworks feedback upon delivery.
 
 ---
 
 ## 6. Git Workflow & Commit Guidelines
 
-This project enforces **Conventional Commits** via **Husky** and **Commitlint**.
+This project enforces **Conventional Commits** via **Husky** and **Commitlint** with full support for **camelCase** and capitalized terms.
 
 When committing code, use the pattern:
 ```text
@@ -153,8 +154,9 @@ type(scope): subject
 
 ### Examples:
 * `feat(example): this is a commit example`
-* `fix(theme): prevent button layout shifting`
-* `refactor(router): modularize route model`
-* `style(hero): polish glassmorphic borders`
+* `feat(themeContext): update ThemeProvider state`
+* `fix(contactSection): connect direct message to Web3Forms API`
+* `refactor(CvPage): optimize React Router navigation and modals`
+* `style(SkillsToolkit): polish GlassCard hover effects`
 
 For the full list of allowed types and validation rules, see the [Commit Message Rules Guide](./commit-rules.md).

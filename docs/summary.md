@@ -34,7 +34,16 @@ A comprehensive overview of the modern tools, libraries, architectural paradigms
 
 ---
 
-## 2. Advanced Interactive Engines
+## 2. Advanced Interactive Engines & Features
+
+### **"Less, but better" Minimalist UI Design**
+* Visual uncluttering: The landing page presents clean, punchy cards scannable in seconds.
+* Deep technical information (accomplishments, architecture breakdowns, security policies) is revealed seamlessly via high-performance **"Read More"** modal dialogs.
+* Minimalist header showcasing brand identity and action tools, with navigation jumping managed via the floating right-side dock.
+
+### **Web3Forms Direct Messaging Integration**
+* Connected direct message engine in `ContactSection` submitting payloads via `https://api.web3forms.com/submit`.
+* Features client-side validation, silent honeypot spam protection (`botcheck: false`), loading spinners, and instant celebration fireworks on delivery.
 
 ### **Hardware-Accelerated Particle Canvas Engine**
 * Custom 2D HTML5 Canvas animation loop with zero DOM overlay overhead.
@@ -49,8 +58,9 @@ A comprehensive overview of the modern tools, libraries, architectural paradigms
 * Interactive telemetry charting engine in the Dama Analytics project showcase.
 * Supports real-time time-series area charts with dynamic gradients, responsive viewports, and custom tooltips.
 
-### **Canvas Confetti Particle Bursts**
-* Physics-based celebratory confetti and fireworks effects triggered upon key user interactions (copying email, downloading resume, switching themes).
+### **ATS-Optimized 2-Page Print Engine**
+* Dedicated `@media print` layout with `@page { margin: 18mm 14mm }` generating clean, single-click ATS-friendly PDF resumes.
+* Displays full Professional Bio, structured Experience, Key Projects, and Technical Skills across exactly 2 balanced pages with zero confetti or URL footer interference.
 
 ---
 
@@ -74,4 +84,4 @@ The project is structured according to **Feature-Sliced Design (FSD v2.1)** stan
 * **Build Time:** < 2.0s with React Compiler enabled.
 * **FPS:** Consistent 60–120 FPS on high-refresh-rate displays.
 * **Accessibility:** Semantic HTML5 landmarks, ARIA labels on all interactive controls, and high-contrast color ratios in both Day and Night modes.
-* **Print Ready:** Dedicated `@media print` layout generating clean, single-click ATS-friendly PDF resumes.
+* **Print Ready:** Generates flawless 2-page ATS resumes with contact info header and uniform margins.

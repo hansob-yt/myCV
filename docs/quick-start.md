@@ -1,6 +1,6 @@
 # Quick Start Guide
 
-This guide walks you through setting up, running, and building the CV & Portfolio application locally.
+This guide walks you through setting up, configuring, running, and building the CV & Portfolio application locally.
 
 ---
 
@@ -13,7 +13,7 @@ Make sure you have the following installed on your machine:
 
 ---
 
-## 2. Installation
+## 2. Installation & Environment Setup
 
 1. **Clone the repository**:
    ```bash
@@ -25,6 +25,17 @@ Make sure you have the following installed on your machine:
    ```bash
    npm install
    ```
+
+3. **Configure environment variables (optional)**:
+   A `.env.example` template is provided:
+   ```bash
+   cp .env.example .env
+   ```
+
+   | Variable | Description | Default |
+   | :--- | :--- | :--- |
+   | `VITE_WEB3FORMS_KEY` | Access key for Web3Forms direct messaging | Production key |
+   | `VITE_SITE_URL` | Canonical website domain | `https://hansob.vercel.app` |
 
 ---
 
@@ -53,7 +64,7 @@ This triggers:
 1. `tsc -b`: Type-checking the entire project against strict TypeScript rules.
 2. `vite build`: Compiling with Rollup, the React 19 Compiler (`babel-plugin-react-compiler`), and Tailwind CSS v4 to output minified assets in `dist/`.
 
-To preview the production build locally:
+To preview the production bundle locally:
 
 ```bash
 npm run preview
@@ -79,6 +90,7 @@ npm run lint
 | `npm run build` | Compiles TypeScript and builds optimized production bundle |
 | `npm run preview` | Serves the production build locally for testing |
 | `npm run lint` | Runs Oxlint across the codebase for static code analysis |
+| `npm run prepare` | Configures Husky Git hooks |
 
 ---
 
